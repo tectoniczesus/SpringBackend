@@ -1,0 +1,60 @@
+# ======================
+# Build outputs
+# ======================
+/target/
+*.jar
+*.war
+*.ear
+
+# ======================
+# IDE files
+# ======================
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# ======================
+# OS files
+# ======================
+.DS_Store
+Thumbs.db
+
+# ======================
+# Logs
+# ======================
+*.log
+logs/
+
+# ======================
+# Environment / Secrets
+# ======================
+.env
+.env.*
+application-local.yml
+application-local.properties
+application-dev.yml
+application-dev.properties
+application-prod.yml
+application-prod.properties
+
+# ======================
+# Database / Runtime
+# ======================
+*.db
+*.sqlite
+postgres-data/
+pgdata/
+
+# ======================
+# Test / Coverage
+# ======================
+/coverage/
+*.exec
+
+# ======================
+# Misc
+# ======================
+hs_err_pid*
