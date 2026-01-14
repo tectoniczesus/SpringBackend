@@ -1,15 +1,15 @@
 package com.yeti.hospital.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Data;
 import lombok.ToString;
 
 import java.time.LocalDate;
 
 @Entity
 @ToString
+@Data
+@Table(name = "patient")
 public class Patient {
 
     @Id
@@ -23,4 +23,5 @@ public class Patient {
    private String email;
 
    private String gender;
+   private String bloodGrp;
 }
