@@ -1,6 +1,7 @@
 package com.yeti.hospital.services;
 
 import com.yeti.hospital.entity.Patient;
+import com.yeti.hospital.entity.types.BloodGrpType;
 import com.yeti.hospital.repository.PatientRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +25,10 @@ public class PatientServices {
         return p1;
     }
 
-    public Patient updateBloodGrp(Long id, String bloodGrp){
-        Patient patient = patientRepo.findById(id).orElseThrow(()->new RuntimeException("patient not found"));
-        patient.setBloodGrp(bloodGrp);
-        return patientRepo.save(patient);
-
-    }
+//    public Patient updateBloodGrp(Long id, BloodGrpType bloodGrp){
+//        Patient patient = patientRepo.findById(id).orElseThrow(()->new RuntimeException("patient not found"));
+//        patient.setBloodGrp(bloodGrp);
+//        return patientRepo.save(patient);
+//
+//    }
 }

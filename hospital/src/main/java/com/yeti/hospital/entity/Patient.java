@@ -1,5 +1,6 @@
 package com.yeti.hospital.entity;
 
+import com.yeti.hospital.entity.types.BloodGrpType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;

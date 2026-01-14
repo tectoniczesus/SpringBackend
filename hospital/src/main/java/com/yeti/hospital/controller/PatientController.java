@@ -17,12 +17,12 @@ public class PatientController {
     @Autowired
     private PatientServices patientServices;
 
-    @PatchMapping("/{id}/blood-grp")
-    public ResponseEntity<PatientResponseDTO> updateBloodGrp(
-            @PathVariable Long id,
-            @RequestBody BloodGroupDTO request
-    ){
-        Patient updatePatient =  patientServices.updateBloodGrp(id, request.getBloodGrp());
-        return ResponseEntity.ok(PatientMapper.responseDTO(updatePatient));
-    }
+//    @PatchMapping("/{id}/blood-grp")
+//    public ResponseEntity<PatientResponseDTO> updateBloodGrp(
+//            @PathVariable Long id,
+//            @RequestBody BloodGroupDTO request
+//    ){
+//        Patient updatePatient =  patientServices.updateBloodGrp(id, request.getBloodGrp());
+//        return ResponseEntity.ok(PatientMapper.responseDTO(updatePatient));
+//    }
 }
