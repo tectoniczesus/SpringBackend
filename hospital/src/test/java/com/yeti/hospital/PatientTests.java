@@ -25,7 +25,18 @@ public class PatientTests {
   public void transactionMethod(){
 //      Patient patient = patientRepo.findByName("Aarav Sharma");
 //      System.out.println(patient);
-      List<Patient> patientList = patientRepo.findByBirthDateAndEmail(LocalDate.of(2001,07,22),"priya.verma@gmail.com");
+      List<Patient> patientList = patientRepo.findByNameEndingWith("a");
+      System.out.println("FIND BY NAME ENDING WITH");
+      for (Patient patient:patientList){
+          System.out.println(patient);
+      }
+  }
+
+  @Test
+    public void findByDate(){
+      //FINDING BY QUERY METHOD
+      List<Patient> patientList = patientRepo.findPatientByBirthDateRange(LocalDate.of(1998,1,1),LocalDate.of(2003,1,1));
+      System.out.println("BIRTH DATE BETWEEN"   );
       for (Patient patient:patientList){
           System.out.println(patient);
       }
