@@ -40,7 +40,28 @@ public class PatientTests {
       for (Patient patient:patientList){
           System.out.println(patient);
       }
+
   }
+    @Test
+    public void findByBloodGrp(){
+        List<Object[]> bloodGrpList = patientRepo.countEachBloodGroupType();
+            for (Object[] objects: bloodGrpList){
+                System.out.println(objects[0] + " " + objects[1]);
+            }
+    }
+    @Test
+    public void findAllPatient(){
+        List<Patient> patientList = patientRepo.finaAllPatient();
+        for (Patient patient: patientList){
+            System.out.println(patient);
+        }
+    }
+    @Test
+    public void updatePatient(){
+        int updatedRow = patientRepo.updateNameWithId("John",1l);
+        System.out.println(updatedRow);
+    }
+
 
 
 
