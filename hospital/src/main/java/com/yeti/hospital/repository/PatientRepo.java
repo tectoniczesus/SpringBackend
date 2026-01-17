@@ -1,5 +1,6 @@
 package com.yeti.hospital.repository;
 
+import com.yeti.hospital.dto.BloodGroupCountRepositoryEntity;
 import com.yeti.hospital.entity.Patient;
 import jakarta.transaction.Transactional;
 import org.springframework.cglib.core.Local;
@@ -21,8 +22,18 @@ public interface PatientRepo extends JpaRepository<Patient,Long> {
     @Query("select p.bloodGrp, Count(p) from Patient p group by p.bloodGrp")
     List<Object[]> countEachBloodGroupType();
 
-    @Query(value = "select * from Patient",nativeQuery = true)
-    List<Patient> finaAllPatient();
+//    @Query(value = "select * from Patient",nativeQuery = true)
+//    List<Patient> finaAllPatient();
+    //@Query("select new com.yeti.hospital.dto.BloodGroupCountRepositoryEntity(p.bloodGrp" + "Count(p)) from Patient p group by p.bloodGrp")
+    @Query("""
+    SELECT new com.yeti.hospital.dto.BloodGroupCountRepositoryEntity(
+        p.bloodGrp,
+        COUNT(p)
+    )
+    FROM Patient p
+    GROUP BY p.bloodGrp
+""")
+    List<BloodGroupCountRepositoryEntity> countEachBloodType();
     @Transactional
     @Modifying
     @Query("update Patient p set p.name= :name where p.id = :id")

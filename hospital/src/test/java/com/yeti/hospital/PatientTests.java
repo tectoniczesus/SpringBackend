@@ -1,5 +1,6 @@
 package com.yeti.hospital;
 
+import com.yeti.hospital.dto.BloodGroupCountRepositoryEntity;
 import com.yeti.hospital.entity.Patient;
 import com.yeti.hospital.repository.PatientRepo;
 import com.yeti.hospital.services.PatientServices;
@@ -42,6 +43,14 @@ public class PatientTests {
       }
 
   }
+  @Test
+  public void countBloodGrp(){
+      System.out.println("counting the blood grp");
+      List<BloodGroupCountRepositoryEntity> bloodGrpList = patientRepo.countEachBloodType();
+      for (BloodGroupCountRepositoryEntity bloodGroupCountRepositoryEntity: bloodGrpList){
+          System.out.println(bloodGroupCountRepositoryEntity);
+      }
+  }
     @Test
     public void findByBloodGrp(){
         List<Object[]> bloodGrpList = patientRepo.countEachBloodGroupType();
@@ -49,13 +58,13 @@ public class PatientTests {
                 System.out.println(objects[0] + " " + objects[1]);
             }
     }
-    @Test
-    public void findAllPatient(){
-        List<Patient> patientList = patientRepo.finaAllPatient();
-        for (Patient patient: patientList){
-            System.out.println(patient);
-        }
-    }
+//    @Test
+//    public void findAllPatient(){
+//        List<Patient> patientList = patientRepo.finaAllPatient();
+//        for (Patient patient: patientList){
+//            System.out.println(patient);
+//        }
+//    }
     @Test
     public void updatePatient(){
         int updatedRow = patientRepo.updateNameWithId("John",1l);
