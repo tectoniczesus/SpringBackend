@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.print.Doc;
 import java.time.LocalDate;
 @Entity
 @Data
@@ -20,7 +21,7 @@ public class Appointment {
     private Long id;
 
     @Column(nullable = false)
-    private LocalDate createdAt;
+    private LocalDate appointmentTime;
 
     @Column(length = 500)
     private String reason;
@@ -28,4 +29,7 @@ public class Appointment {
     @ManyToOne
     @JoinColumn(name="patient_id",nullable = false)
     private Patient patient;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Doctor doctor;
 }
