@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.print.Doc;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,4 +24,9 @@ public class Department {
     @ManyToMany//this is for many to many where there is one table is created in which department_id
     //and docter_set_id both will be primary key
     //it will create an extra table known as department_doctor_set
+    @JoinTable(name = "my_dept_doc",
+    joinColumns = @JoinColumn(name = "dept_id"),
+    inverseJoinColumns = @JoinColumn(name = "doctor_id"))
+    private Set<Doctor> doctor = new HashSet<>();
+
 }

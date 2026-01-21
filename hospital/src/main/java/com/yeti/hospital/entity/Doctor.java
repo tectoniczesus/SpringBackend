@@ -1,10 +1,16 @@
 package com.yeti.hospital.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,4 +22,6 @@ public class Doctor {
     private String specialization;
     @Column(nullable = false,unique = true,length = 100)
     private String email;
+    @ManyToMany(mappedBy = "doctor")
+    private Set<Department> departments = new HashSet<>();
 }
