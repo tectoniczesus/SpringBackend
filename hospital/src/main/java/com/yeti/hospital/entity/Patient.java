@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,9 +28,9 @@ public class Patient {
    private String gender;
    private String bloodGrp;
 
-   @OneToOne
+   @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
    @JoinColumn(name = "patient_insurance_id")//this is owing side
    private Insurance insurance;
    @OneToMany(mappedBy = "patient")
-   private List<Appointment> appointmentList;
+   private List<Appointment> appointmentList = new ArrayList<>();
 }
