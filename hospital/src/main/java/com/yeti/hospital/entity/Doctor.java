@@ -3,7 +3,9 @@ package com.yeti.hospital.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 @Entity
 @Getter
@@ -23,4 +25,6 @@ public class Doctor {
     private String email;
     @ManyToMany(mappedBy = "doctor")
     private Set<Department> departments = new HashSet<>();
+    @OneToMany(mappedBy = "doctor")
+    private List<Appointment> appointments = new ArrayList<>();
 }
