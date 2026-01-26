@@ -31,7 +31,7 @@ public class Patient {
    private String gender;
    private String bloodGrp;
 
-   @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+   @OneToOne(cascade = {CascadeType.MERGE}, orphanRemoval = true)
    @JoinColumn(name = "patient_insurance_id")//this is owing side
    private Insurance insurance;
 
