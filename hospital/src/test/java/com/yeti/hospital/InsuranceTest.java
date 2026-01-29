@@ -23,27 +23,27 @@ public class InsuranceTest {
    private InsauranceServices insauranceServices;
    @Autowired
    private AppointmentServices appointmentServices;
-//   @Test
-//    public void testInsurance(){
-//        Insurance insurance = Insurance.builder()
-//                .policyNumber("ICIC-7E45")
-//                .provider("ICIC")
-//                .validUntil(LocalDate.of(2028,8,01))
-//                .build();
-//
-//        Patient patient = insauranceServices.assigneInsuranceToPatient(insurance,2l);
-//
-//        System.out.println(patient);
-//    }
+   @Test
+    public void testInsurance(){
+        Insurance insurance = Insurance.builder()
+                .policyNumber("INDUSLUND-7E45")
+                .provider("INDUSLUND")
+                .validUntil(LocalDate.of(2028,8,01))
+                .build();
 
-    @Test
-    public void deleteInsurance(){
-      //this is used for deleting the insurance
-        //adding the patient id manually
-        // adding the deleteMethod in create insurance will give error or will create a new insurance
-       Patient patient = insauranceServices.disassociateInsurance(2l);
+        Patient patient = insauranceServices.assigneInsuranceToPatient(insurance,2l);
+
         System.out.println(patient);
     }
+
+//    @Test
+//    public void deleteInsurance(){
+//      //this is used for deleting the insurance
+//        //adding the patient id manually
+//        // adding the deleteMethod in create insurance will give error or will create a new insurance
+//       Patient patient = insauranceServices.disassociateInsurance(2l);
+//        System.out.println(patient);
+//    }
 //    @Transactional
 //   @Test
 //    public void testCreateAppointment(){

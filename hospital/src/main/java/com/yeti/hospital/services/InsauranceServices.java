@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
+
 @Service
 @RequiredArgsConstructor
 public class InsauranceServices {
@@ -24,6 +26,7 @@ public class InsauranceServices {
 
         patient.setInsurance(insurance);
         insurance.setPatient(patient);
+        insuranceRepository.save(insurance);
       return patient;
     }
 
@@ -34,4 +37,5 @@ public class InsauranceServices {
      patient.setInsurance(null);
      return patient;
     }
+
 }

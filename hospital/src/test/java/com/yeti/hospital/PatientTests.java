@@ -22,42 +22,42 @@ public class PatientTests {
 //      List<Patient> patientList = patientRepo.findAll();
 //      System.out.println(patientList);
 //  }
-  @Test
-  public void transactionMethod(){
-//      Patient patient = patientRepo.findByName("Aarav Sharma");
-//      System.out.println(patient);
-      List<Patient> patientList = patientRepo.findByNameEndingWith("a");
-      System.out.println("FIND BY NAME ENDING WITH");
-      for (Patient patient:patientList){
-          System.out.println(patient);
-      }
-  }
-
-  @Test
-    public void findByDate(){
-      //FINDING BY QUERY METHOD
-      List<Patient> patientList = patientRepo.findPatientByBirthDateRange(LocalDate.of(1998,1,1),LocalDate.of(2003,1,1));
-      System.out.println("BIRTH DATE BETWEEN"   );
-      for (Patient patient:patientList){
-          System.out.println(patient);
-      }
-
-  }
-  @Test
-  public void countBloodGrp(){
-      System.out.println("counting the blood grp");
-      List<BloodGroupCountRepositoryEntity> bloodGrpList = patientRepo.countEachBloodType();
-      for (BloodGroupCountRepositoryEntity bloodGroupCountRepositoryEntity: bloodGrpList){
-          System.out.println(bloodGroupCountRepositoryEntity);
-      }
-  }
-    @Test
-    public void findByBloodGrp(){
-        List<Object[]> bloodGrpList = patientRepo.countEachBloodGroupType();
-            for (Object[] objects: bloodGrpList){
-                System.out.println(objects[0] + " " + objects[1]);
-            }
-    }
+//  @Test
+//  public void transactionMethod(){
+////      Patient patient = patientRepo.findByName("Aarav Sharma");
+////      System.out.println(patient);
+//      List<Patient> patientList = patientRepo.findByNameEndingWith("a");
+//      System.out.println("FIND BY NAME ENDING WITH");
+//      for (Patient patient:patientList){
+//          System.out.println(patient);
+//      }
+//  }
+//
+//  @Test
+//    public void findByDate(){
+//      //FINDING BY QUERY METHOD
+//      List<Patient> patientList = patientRepo.findPatientByBirthDateRange(LocalDate.of(1998,1,1),LocalDate.of(2003,1,1));
+//      System.out.println("BIRTH DATE BETWEEN"   );
+//      for (Patient patient:patientList){
+//          System.out.println(patient);
+//      }
+//
+//  }
+//  @Test
+//  public void countBloodGrp(){
+//      System.out.println("counting the blood grp");
+//      List<BloodGroupCountRepositoryEntity> bloodGrpList = patientRepo.countEachBloodType();
+//      for (BloodGroupCountRepositoryEntity bloodGroupCountRepositoryEntity: bloodGrpList){
+//          System.out.println(bloodGroupCountRepositoryEntity);
+//      }
+//  }
+//    @Test
+//    public void findByBloodGrp(){
+//        List<Object[]> bloodGrpList = patientRepo.countEachBloodGroupType();
+//            for (Object[] objects: bloodGrpList){
+//                System.out.println(objects[0] + " " + objects[1]);
+//            }
+//    }
 //    @Test
 //    public void findAllPatient(){
 //        List<Patient> patientList = patientRepo.finaAllPatient();
@@ -65,10 +65,17 @@ public class PatientTests {
 //            System.out.println(patient);
 //        }
 //    }
+//    @Test
+//    public void updatePatient(){
+//        int updatedRow = patientRepo.updateNameWithId("John",1l);
+//        System.out.println(updatedRow);
+//    }
+//TODO adding new insurance to patient and then deleting the patient to find out if the insurance is also deleting or not
+//DONE
     @Test
-    public void updatePatient(){
-        int updatedRow = patientRepo.updateNameWithId("John",1l);
-        System.out.println(updatedRow);
+    public void deletingPatient(){
+      Patient patient = patientServices.deletingPatient(2l);
+        System.out.println(patient);
     }
 
 
