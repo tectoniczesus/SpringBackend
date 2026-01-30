@@ -1,5 +1,6 @@
 package com.yeti.hospital.services;
 
+import com.yeti.hospital.dto.AppointmentResponseDTO;
 import com.yeti.hospital.entity.Appointment;
 import com.yeti.hospital.entity.Doctor;
 import com.yeti.hospital.entity.Patient;
@@ -9,10 +10,13 @@ import com.yeti.hospital.repository.PatientRepo;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.print.Doc;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +28,8 @@ public class AppointmentServices {
   @Autowired
   private final PatientRepo patientRepo;
 
+
+   private final ModelMapper modelMapper;
   @Transactional
   public Appointment createNewAppointment(Appointment appointment, Long DoctorID, Long PatientID) {
     Doctor doctor = doctorRepository.findById(DoctorID).orElseThrow();
@@ -52,5 +58,13 @@ public class AppointmentServices {
     appointment.setDoctor(doctor); // THIS IS ENOUGH
     doctor.getAppointments().add(appointment);
     return appointment;
+  }
+
+  public List<AppointmentResponseDTO> getDoctorsAppointment(Long doctorId){
+     Doctor doctor = doctorRepository.findById(doctorId).orElseThrow();
+   return doctor.getAppointments()
+             .stream()
+             .map(appointment -> modelMapper.map(appointment, AppointmentResponseDTO.class))
+             .collect(Collectors.toList());
   }
 }
