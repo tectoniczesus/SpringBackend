@@ -3,12 +3,16 @@ package com.yeti.hospital.repository;
 import com.yeti.hospital.dto.BloodGroupCountRepositoryEntity;
 import com.yeti.hospital.entity.Patient;
 import jakarta.transaction.Transactional;
+//import org.hibernate.query.Page;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.cglib.core.Local;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+//import java.awt.print.Pageable;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,6 +25,9 @@ public interface PatientRepo extends JpaRepository<Patient,Long> {
                                               @Param("endDate") LocalDate endDate);
     @Query("select p.bloodGrp, Count(p) from Patient p group by p.bloodGrp")
     List<Object[]> countEachBloodGroupType();
+   @Query(value = "select * from patient", nativeQuery = true)
+    Page<Patient> findAllPatients(Pageable pageable);
+
 
 //    @Query(value = "select * from Patient",nativeQuery = true)
 //    List<Patient> finaAllPatient();

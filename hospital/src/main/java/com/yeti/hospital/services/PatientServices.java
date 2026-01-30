@@ -1,19 +1,27 @@
 package com.yeti.hospital.services;
 
+import com.yeti.hospital.dto.PatientResponseDTO;
 import com.yeti.hospital.entity.Patient;
 import com.yeti.hospital.repository.PatientRepo;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.Id;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PatientServices {
     @Autowired
     private PatientRepo patientRepo;
-
+    private final ModelMapper modelMapper;
 
 
     @Transactional
@@ -30,6 +38,13 @@ public class PatientServices {
         patientRepo.delete(patient);
         System.out.println("patient deleted" + patient);
         return patient;
+    }
+
+    public List<PatientResponseDTO> getAllPatient(Integer pageNumber, Integer pageSize){
+        return patientRepo.findAllPatients(PageRequest.of(pageNumber,pageSize))
+                .stream()
+                .map(patient -> modelMapper.map(patient,PatientResponseDTO.class))
+                .collect(Collectors.toList());
     }
 
 //    public Patient updateBloodGrp(Long id, BloodGrpType bloodGrp){
