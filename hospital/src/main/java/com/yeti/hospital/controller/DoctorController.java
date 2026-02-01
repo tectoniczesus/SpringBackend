@@ -17,13 +17,5 @@ public class DoctorController {
 private final AppointmentServices appointmentServices;
   //FIXME use user id to find the appointment for the doctor
   // then check if it is working or not
-    /**
-     * *  FIX DONE
-     * ? Only manual id is added
-      */
-  @GetMapping("/appointment")
-    public ResponseEntity<List<AppointmentResponseDTO>> getDocAppointments(){
-      return ResponseEntity.ok(appointmentServices.getDoctorsAppointment(2l));
-  }
 
 }
