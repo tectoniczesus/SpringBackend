@@ -17,16 +17,16 @@ import org.springframework.security.web.SecurityFilterChain;
 public class webSecurityConfig {
      private final PasswordEncoder passwordEncoder;
     @Bean
-   // ?  the route localhost:8080/patient/allPatient is working fine as public
-    //FIXME but all me the other routes are giving error of 403forbidden even after
-    // adding perfect username and pass
+   // *  the route localhost:8080/patient/allPatient is working fine as public
+    //? but all me the other routes are giving error of 403forbidden even after
+    // ?adding perfect username and pass
 
-    /** ?  all the other routes are working fine only error was that
-    ? the route starting from requestMatchers was not created at first
-    ? example localhost:8080/patient/allPatient will work because patient route exits
-    ?  example2 localhost:8080/admin/allPatient will throw 403 error even if user and password is correct
-    ?  example 3 localhost:8080/admin/patient/allPatient will throw 403 error too
-   **/
+    /* *  all the other routes are working fine only error was that
+     * the route starting from requestMatchers was not created at first
+    * example localhost:8080/patient/allPatient will work because patient route exits
+    *  example2 localhost:8080/admin/allPatient will throw 403 error even if user and password is correct
+    *  example 3 localhost:8080/admin/patient/allPatient will throw 403 error too
+   */
 
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.
