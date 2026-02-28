@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthServices {
     private final AuthenticationManager authenticationManager;
-
+    private final AuthUtil authUtil;
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(loginRequestDTO.getUsername() ,loginRequestDTO.getPassword())
@@ -22,8 +22,8 @@ public class AuthServices {
           /*
            ? add jswon web token dependency in pom.xml file then return the LoginResponseDTO
           */
+           String token = authUtil.generateAccessToken(user);
 
-
-          return  null;
+          return  new LoginResponseDTO(token,user.getId());
     }
 }
