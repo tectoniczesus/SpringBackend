@@ -1,9 +1,7 @@
 package com.yeti.hospital.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,6 +12,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
+@AllArgsConstructor
 public class User  implements UserDetails {
 
     @Id
