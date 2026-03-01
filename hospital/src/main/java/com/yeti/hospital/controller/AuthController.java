@@ -12,17 +12,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
   private final AuthServices authServices;
+
   @PostMapping("/login")
-  public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequestDTO){
-        return ResponseEntity.ok(authServices.login(loginRequestDTO));
+  public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequestDTO) {
+    return ResponseEntity.ok(authServices.login(loginRequestDTO));
   }
 
-    @PostMapping("/signup")
-    public ResponseEntity<SignUpResponseDTO> signup(@RequestBody LoginRequestDTO signUpRequestDTO){
-        return ResponseEntity.ok(authServices.signup(signUpRequestDTO));
-    }
+  @PostMapping("/signup")
+  public ResponseEntity<SignUpResponseDTO> signup(@RequestBody LoginRequestDTO signUpRequestDTO) {
+    return ResponseEntity.ok(authServices.signup(signUpRequestDTO));
+  }
 }

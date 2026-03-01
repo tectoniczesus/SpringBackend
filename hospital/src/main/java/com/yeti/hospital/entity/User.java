@@ -15,17 +15,16 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @Table(name = "app_user")
-public class User  implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-      private Long id;
+    private Long id;
 
     @JoinColumn(unique = true)
-    private String name;
+    private String username;
 
     private String password;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -34,6 +33,6 @@ public class User  implements UserDetails {
 
     @Override
     public String getUsername() {
-        return "";
+        return username;
     }
 }
