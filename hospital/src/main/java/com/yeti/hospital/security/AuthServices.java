@@ -10,6 +10,7 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +19,7 @@ public class AuthServices {
   private final AuthenticationManager authenticationManager;
   private final AuthUtil authUtil;
   private final UserRepository userRepository;
+  private final PasswordEncoder passwordEncoder;
 
   public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
     Authentication authentication = authenticationManager.authenticate(
@@ -40,7 +42,7 @@ public class AuthServices {
 
     user = userRepository.save(User.builder()
         .username(signUpRequestDTO.getUsername())
-        .password(signUpRequestDTO.getPassword())
+        .password(passwordEncoder.encode(signUpRequestDTO.getPassword()))
         .build());
     return new SignUpResponseDTO(user.getId(), user.getUsername());
 
