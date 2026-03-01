@@ -31,7 +31,7 @@ public class webSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.
                 authorizeHttpRequests(auth -> auth
-                        //.requestMatchers("/patient/**").permitAll()
+                        .requestMatchers("/public/**","/auth/**").permitAll()
                         .requestMatchers("/patient/**").hasRole("ADMIN")
                         .requestMatchers("/doctor/**").hasAnyRole("DOCTOR","ADMIN")
                 )
@@ -39,6 +39,7 @@ public class webSecurityConfig {
 
         return httpSecurity.build();
     }
+
 
     @Bean
     UserDetailsService userDetailsService(){

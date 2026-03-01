@@ -10,10 +10,11 @@ import java.util.List;
 
 @Entity
 @RequiredArgsConstructor
-@NoArgsConstructor
+
 @Data
 @Builder
 @AllArgsConstructor
+@Table(name = "app_user")
 public class User  implements UserDetails {
 
     @Id
