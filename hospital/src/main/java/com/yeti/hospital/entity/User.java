@@ -11,7 +11,8 @@ import java.util.List;
 @Entity
 @RequiredArgsConstructor
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @Table(name = "app_user")
