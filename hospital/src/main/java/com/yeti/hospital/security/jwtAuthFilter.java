@@ -1,5 +1,6 @@
 package com.yeti.hospital.security;
 
+import com.yeti.hospital.entity.User;
 import com.yeti.hospital.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -7,6 +8,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -29,7 +32,15 @@ public class jwtAuthFilter extends OncePerRequestFilter {
          String token = requestTokenHeader.split("Bearer ")[1];
 
         String userName = authUtil.getUsernameFromToken(token);
+        if(userName!=null && SecurityContextHolder.getContext().getAuthentication() == null){
+            User user = userRepository.findByUsername(userName).orElseThrow();
 
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken  = new UsernamePasswordAuthenticationToken(user,null
+            , user.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+        }
+
+        filterChain.doFilter(request,response);
 
     }
 }
