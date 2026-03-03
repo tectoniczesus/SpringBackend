@@ -25,5 +25,9 @@ public class jwtAuthFilter extends OncePerRequestFilter {
              filterChain.doFilter(request,response);
              return;
          }
+         String token = requestTokenHeader.split("Bearer")[1];
+
+
+
     }
 }
