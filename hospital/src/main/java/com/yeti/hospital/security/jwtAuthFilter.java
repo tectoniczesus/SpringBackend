@@ -17,7 +17,8 @@ import java.io.IOException;
 
 public class jwtAuthFilter extends OncePerRequestFilter {
     private final UserRepository userRepository;
-     @Override
+    private final AuthUtil authUtil;
+    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
          log.info("incoming request: {}",request.getRequestURI());
          final String requestTokenHeader = request.getHeader("Authorization");
@@ -25,8 +26,9 @@ public class jwtAuthFilter extends OncePerRequestFilter {
              filterChain.doFilter(request,response);
              return;
          }
-         String token = requestTokenHeader.split("Bearer")[1];
+         String token = requestTokenHeader.split("Bearer ")[1];
 
+        String userName = authUtil.getUsernameFromToken(token);
 
 
     }
