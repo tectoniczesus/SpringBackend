@@ -30,7 +30,12 @@ public class PatientController {
 //        Patient updatePatient =  patientServices.updateBloodGrp(id, request.getBloodGrp());
 //        return ResponseEntity.ok(PatientMapper.responseDTO(updatePatient));
 //    }
-  @GetMapping("/allPatient")
+    /**
+     *
+     * ? /doctor/appointments and /patient/allPatient are gonna  access using jwt token only
+     */
+
+    @GetMapping("/allPatient")
     public ResponseEntity<List<PatientResponseDTO>> getAllPatient(
             @RequestParam(value = "page", defaultValue = "0") Integer pageNumber,
             @RequestParam(value = "size", defaultValue = "10") Integer pageSize

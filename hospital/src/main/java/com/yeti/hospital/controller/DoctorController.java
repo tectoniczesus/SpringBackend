@@ -17,6 +17,11 @@ public class DoctorController {
 private final AppointmentServices appointmentServices;
   //FIXME use user id to find the appointment for the doctor
   // then check if it is working or not
+    /**
+     *
+     * ? /doctor/appointments and /patient/allPatient are gonna  access using jwt token only
+     */
+
 
     @GetMapping("/appointments")
    public ResponseEntity<List<AppointmentResponseDTO>> getAllAppointment(){
