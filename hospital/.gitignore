@@ -33,6 +33,7 @@ logs/
 # ======================
 .env
 .env.*
+application.yml
 application-local.yml
 application-local.properties
 application-dev.yml
