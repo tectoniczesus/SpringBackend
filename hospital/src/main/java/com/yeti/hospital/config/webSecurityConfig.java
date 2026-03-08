@@ -1,5 +1,6 @@
 package com.yeti.hospital.config;
 
+import com.yeti.hospital.security.Oauth2SuccessHandler;
 import com.yeti.hospital.security.jwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ import java.util.List;
 public class webSecurityConfig {
         private final PasswordEncoder passwordEncoder;
         private final jwtAuthFilter jwtAuthFilter;
-
+         private final Oauth2SuccessHandler oauth2SuccessHandler;
 
         // * the route localhost:8080/patient/allPatient is working fine as public
         // ? but all me the other routes are giving error of 403forbidden even after
@@ -46,23 +47,25 @@ public class webSecurityConfig {
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
                 httpSecurity
-                                .cors(Customizer.withDefaults())
+                               // .cors(Customizer.withDefaults())
                                 .csrf(csrfConfig -> csrfConfig.disable())
                                 .sessionManagement(sessionConfig -> sessionConfig
-                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                                 .authorizeHttpRequests(auth -> auth
                                                 //.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                                 .requestMatchers("/public/**", "/api/v1/auth/**", "/error").permitAll()
 //                                                .requestMatchers("/patient/**").hasRole("ADMIN")
 //                                                .requestMatchers("/doctor/**").hasAnyRole("DOCTOR", "ADMIN")
                                                 .anyRequest().authenticated())
-                        .httpBasic(Customizer.withDefaults())
+                        //.httpBasic(Customizer.withDefaults())
                         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                        .oauth2Login(oAuth2 -> oAuth2.failureHandler(
-                                ((request, response, exception) -> {
+                        .oauth2Login(oAuth2 -> oAuth2
+                                .failureHandler((request, response, exception) -> {
                                         log.error("oAuth message:{}" , exception.getMessage() );
-                                })
-                        ))
+                                }
+                        )
+                                        .successHandler(oauth2SuccessHandler)
+                        )
                 ;
                 // .formLogin(Customizer.withDefaults());
                 /**
