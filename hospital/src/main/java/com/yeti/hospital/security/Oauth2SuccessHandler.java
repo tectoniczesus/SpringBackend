@@ -15,6 +15,7 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class Oauth2SuccessHandler implements AuthenticationSuccessHandler {
+    private final AuthServices authServices;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         System.out.println(authentication.getClass());
@@ -26,6 +27,11 @@ public class Oauth2SuccessHandler implements AuthenticationSuccessHandler {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         System.out.println("User attributes: " + oAuth2User.getAttributes());
         System.out.println("Registration ID: " + token.getAuthorizedClientRegistrationId());
+
+        String registrationId = token.getAuthorizedClientRegistrationId();
+
+
+        authServices.handleOAuth2LoginRequest(oAuth2User,registrationId);
         /**
          * ! the token is not showing in thread & variable
          *
