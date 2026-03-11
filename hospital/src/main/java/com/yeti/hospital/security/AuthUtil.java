@@ -6,6 +6,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -54,4 +55,21 @@ public class AuthUtil {
             default -> throw new IllegalArgumentException("Unsupported argument type " + registrationId);
         };
     }
+
+    public String determineProviderIdFromOAuth2User(OAuth2User oAuth2User,String registrationId){
+        String providerId = switch (registrationId.toLowerCase()){
+            case "google" -> oAuth2User.getAttribute("sub");
+            case "github" -> oAuth2User.getAttribute("id").toString();
+            default -> {
+                //log.error("unsupported OAuth2 provider {}" + registrationId);
+                throw new IllegalArgumentException("Unsupport OAuth2 provider" + registrationId);
+            }
+        };
+        if(providerId==null || providerId.isBlank()){
+            throw new IllegalArgumentException("unable to determine providerId for OAuth2 login");
+        }
+
+        return providerId;
+    }
+
 }
