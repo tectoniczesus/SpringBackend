@@ -1,6 +1,7 @@
 package com.yeti.hospital.security;
 
 import com.yeti.hospital.entity.User;
+import com.yeti.hospital.entity.types.AuthProviderType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -43,5 +44,14 @@ public class AuthUtil {
                 .getPayload();
 
         return  claims.getSubject();
+    }
+
+    public AuthProviderType getProviderTypeFromRegistration(String registrationId){
+        return switch (registrationId.toLowerCase()){
+            case "google" -> AuthProviderType.GOOGLE;
+            case "github" -> AuthProviderType.GITHUB;
+            case "facebook" -> AuthProviderType.FACEBOOK;
+            default -> throw new IllegalArgumentException("Unsupported argument type " + registrationId);
+        };
     }
 }
