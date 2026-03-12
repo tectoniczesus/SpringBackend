@@ -4,6 +4,7 @@ import com.yeti.hospital.dto.LoginRequestDTO;
 import com.yeti.hospital.dto.LoginResponseDTO;
 import com.yeti.hospital.dto.SignUpResponseDTO;
 import com.yeti.hospital.entity.User;
+import com.yeti.hospital.entity.types.AuthProviderType;
 import com.yeti.hospital.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,8 @@ public class AuthServices {
         //provider id
         //save the providerType and id
         //if already has account then login else signup and login
+        AuthProviderType providerType = authUtil.getProviderTypeFromRegistration(registrationId);
+        String providerId = authUtil.determineProviderIdFromOAuth2User(oAuth2User,registrationId);
 
 
 
