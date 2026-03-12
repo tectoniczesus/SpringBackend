@@ -74,4 +74,17 @@ public class AuthUtil {
         return providerId;
     }
 
+    public String determineUserFromOauth2User(OAuth2User oauth2User,String registrationId,String providerId ){
+        String email  = oauth2User.getAttribute("email");
+        if(email==null && !email.isBlank()){
+            return email;
+        }
+        return switch (registrationId.toLowerCase()){
+            case "google" -> oauth2User.getAttribute("sub");
+            case "github" -> oauth2User.getAttribute("login");
+
+            default -> providerId;
+        };
+    }
+
 }

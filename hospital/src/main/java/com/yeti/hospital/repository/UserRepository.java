@@ -1,6 +1,7 @@
 package com.yeti.hospital.repository;
 
 import com.yeti.hospital.entity.User;
+import com.yeti.hospital.entity.types.AuthProviderType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -8,4 +9,5 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User,Long> {
   Optional<User> findByUsername(String username);
 
+    Object findByProviderIdAndProviderType(String providerId, AuthProviderType providerType);
 }
