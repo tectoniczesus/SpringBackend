@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServices {
@@ -58,6 +60,10 @@ public class AuthServices {
         //if already has account then login else signup and login
         AuthProviderType providerType = authUtil.getProviderTypeFromRegistration(registrationId);
         String providerId = authUtil.determineProviderIdFromOAuth2User(oAuth2User,registrationId);
+      User user = userRepository.findByProviderIdAndAuthProviderType(providerId,providerType).orElse(null);
+      String email = oAuth2User.getAttribute("email");
+      //String name = oAuth2User.getAttribute("name");
+        User userEmail = userRepository.findByUsername(email).orElse(null);
 
 
 
