@@ -6,6 +6,7 @@ import com.yeti.hospital.dto.SignUpResponseDTO;
 import com.yeti.hospital.entity.User;
 import com.yeti.hospital.entity.types.AuthProviderType;
 import com.yeti.hospital.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,7 +38,7 @@ public class AuthServices {
         return new LoginResponseDTO(token, user.getId());
     }
 
-  public User signUp(LoginRequestDTO signUpRequestDTO) {
+  public User signUpInternal(LoginRequestDTO signUpRequestDTO) {
     User user = userRepository.findByUsername(signUpRequestDTO.getUsername()).orElse(null);
 
     if (user != null)
@@ -51,10 +52,11 @@ public class AuthServices {
 
   }
     public SignUpResponseDTO signup(LoginRequestDTO signupRequestDTO){
-        User user = signUp(signupRequestDTO);
+        User user = signUpInternal(signupRequestDTO);
         return new SignUpResponseDTO(user.getId(),user.getUsername());
 
     }
+    @Transactional
     public ResponseEntity<LoginResponseDTO> handleOAuth2LoginRequest(OAuth2User oAuth2User, String registrationId) {
     //provider type
         //provider id
@@ -68,7 +70,7 @@ public class AuthServices {
         User userEmail = userRepository.findByUsername(email).orElse(null);
         if(user==null && userEmail==null){
             String userName = authUtil.determineUserFromOauth2User(oAuth2User,registrationId,providerId);
-            SignUpResponseDTO signUpResponseDTO = signup(new LoginRequestDTO(userName,null));
+            user = signUpInternal(new LoginRequestDTO(userName,null));
         }else if(user!=null){
             if (email!=null && !email.isBlank() && !email.equals(user.getUsername())){
              user.setUsername(email);
@@ -78,10 +80,10 @@ public class AuthServices {
             throw  new BadCredentialsException("this email is already registered with provider " + userEmail.getAuthProviderType());
         }
 
+       LoginResponseDTO loginResponseDTO = new LoginResponseDTO(authUtil.generateAccessToken(user),user.getId());
 
-
-
-        return null;
+       return ResponseEntity.ok(loginResponseDTO);
+        //return null;
 
     }
 }
