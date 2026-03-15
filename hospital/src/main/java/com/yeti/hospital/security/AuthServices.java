@@ -12,12 +12,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,20 +37,24 @@ public class AuthServices {
         return new LoginResponseDTO(token, user.getId());
     }
 
-  public SignUpResponseDTO signup(LoginRequestDTO signUpRequestDTO) {
+  public User signUp(LoginRequestDTO signUpRequestDTO) {
     User user = userRepository.findByUsername(signUpRequestDTO.getUsername()).orElse(null);
 
     if (user != null)
       throw new IllegalArgumentException("User already exists");
 
-    user = userRepository.save(User.builder()
+    return userRepository.save(User.builder()
         .username(signUpRequestDTO.getUsername())
         .password(passwordEncoder.encode(signUpRequestDTO.getPassword()))
         .build());
-    return new SignUpResponseDTO(user.getId(), user.getUsername());
+    //return new SignUpResponseDTO(user.getId(), user.getUsername());
 
   }
+    public SignUpResponseDTO signup(LoginRequestDTO signupRequestDTO){
+        User user = signUp(signupRequestDTO);
+        return new SignUpResponseDTO(user.getId(),user.getUsername());
 
+    }
     public ResponseEntity<LoginResponseDTO> handleOAuth2LoginRequest(OAuth2User oAuth2User, String registrationId) {
     //provider type
         //provider id
