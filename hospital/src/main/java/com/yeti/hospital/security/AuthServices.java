@@ -38,21 +38,27 @@ public class AuthServices {
         return new LoginResponseDTO(token, user.getId());
     }
 
-  public User signUpInternal(LoginRequestDTO signUpRequestDTO) {
+  public User signUpInternal(LoginRequestDTO signUpRequestDTO , AuthProviderType authProviderType, String providerId) {
     User user = userRepository.findByUsername(signUpRequestDTO.getUsername()).orElse(null);
 
     if (user != null)
       throw new IllegalArgumentException("User already exists");
 
-    return userRepository.save(User.builder()
-        .username(signUpRequestDTO.getUsername())
-        .password(passwordEncoder.encode(signUpRequestDTO.getPassword()))
-        .build());
+    user = User.builder()
+            .username(signUpRequestDTO.getUsername())
+            .providerId(providerId)
+            .authProviderType(authProviderType)
+            .build();
+
+       if(authProviderType == AuthProviderType.EMAIL){
+           user.setPassword(passwordEncoder.encode(signUpRequestDTO.getPassword()));
+       }
+       return userRepository.save(user);
     //return new SignUpResponseDTO(user.getId(), user.getUsername());
 
   }
     public SignUpResponseDTO signup(LoginRequestDTO signupRequestDTO){
-        User user = signUpInternal(signupRequestDTO);
+        User user = signUpInternal(signupRequestDTO,AuthProviderType.EMAIL,null);
         return new SignUpResponseDTO(user.getId(),user.getUsername());
 
     }
@@ -70,7 +76,7 @@ public class AuthServices {
         User userEmail = userRepository.findByUsername(email).orElse(null);
         if(user==null && userEmail==null){
             String userName = authUtil.determineUserFromOauth2User(oAuth2User,registrationId,providerId);
-            user = signUpInternal(new LoginRequestDTO(userName,null));
+            user = signUpInternal(new LoginRequestDTO(userName,null),providerType,providerId);
         }else if(user!=null){
             if (email!=null && !email.isBlank() && !email.equals(user.getUsername())){
              user.setUsername(email);
