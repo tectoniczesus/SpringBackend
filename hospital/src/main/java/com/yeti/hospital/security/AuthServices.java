@@ -76,9 +76,9 @@ public class AuthServices {
         User userEmail = userRepository.findByUsername(email).orElse(null);
         if(user==null && userEmail==null){
             // ? this userName is storing the providerId rather than the email as a username in DB
-            //String userName = authUtil.determineUserFromOauth2User(oAuth2User,registrationId,providerId);
+            String userName = authUtil.determineUserFromOauth2User(oAuth2User,registrationId,providerId);
            // ? thats why we are using this userName
-            String userName = email!=null ? email:null;
+            //String userName = email!=null ? email:null;
             user = signUpInternal(new LoginRequestDTO(userName,null),providerType,providerId);
         }else if(user!=null){
             if (email!=null && !email.isBlank() && !email.equals(user.getUsername())){
@@ -93,6 +93,10 @@ public class AuthServices {
 
        return ResponseEntity.ok(loginResponseDTO);
         //return null;
+
+
+        //! new user,providerId,providerType  is created when login in using  github with same email
+        //!rather than just changing the providerType of exiting authorize email
 
     }
 }

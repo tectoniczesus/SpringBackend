@@ -76,7 +76,7 @@ public class AuthUtil {
 
     public String determineUserFromOauth2User(OAuth2User oauth2User,String registrationId,String providerId ){
         String email  = oauth2User.getAttribute("email");
-        if(email==null && !email.isBlank()){
+        if(email!=null && !email.isBlank()){
             return email;
         }
         return switch (registrationId.toLowerCase()){

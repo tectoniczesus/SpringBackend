@@ -16,7 +16,9 @@ import java.util.List;
 @Setter
 @Builder
 @AllArgsConstructor
-@Table(name = "app_user")
+@Table(name = "app_user",indexes = {
+        @Index(name = "idx_provider_id_provider_type",columnList = "providerId, authProviderType")
+})
 public class User implements UserDetails {
 
     @Id
