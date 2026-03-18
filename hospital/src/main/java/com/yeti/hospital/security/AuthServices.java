@@ -5,6 +5,7 @@ import com.yeti.hospital.dto.LoginResponseDTO;
 import com.yeti.hospital.dto.SignUpResponseDTO;
 import com.yeti.hospital.entity.User;
 import com.yeti.hospital.entity.types.AuthProviderType;
+import com.yeti.hospital.entity.types.RoleType;
 import com.yeti.hospital.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +50,7 @@ public class AuthServices {
     user = User.builder()
             .username(signUpRequestDTO.getUsername())
             .providerId(providerId)
+            .roleType(Set.of(RoleType.PATIENT))
             .authProviderType(authProviderType)
             .build();
 

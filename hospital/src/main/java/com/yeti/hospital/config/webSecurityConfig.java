@@ -76,19 +76,19 @@ public class webSecurityConfig {
                 return httpSecurity.build();
         }
 //
-//        @Bean
-//        UserDetailsService userDetailsService() {
-//                UserDetails user1 = User.withUsername("admin")
-//                                .password(passwordEncoder.encode("pass"))
-//                                .roles("ADMIN")
-//                                .build();
-//                UserDetails user2 = User.withUsername("doctor")
-//                                .password(passwordEncoder.encode("pass"))
-//                                .roles("DOCTOR")
-//                                .build();
-//
-//                return new InMemoryUserDetailsManager(user1, user2);
-//        }
+        @Bean
+        UserDetailsService userDetailsService() {
+                UserDetails user1 = User.withUsername("admin")
+                                .password(passwordEncoder.encode("pass"))
+                                .roles("ADMIN")
+                                .build();
+                UserDetails user2 = User.withUsername("doctor")
+                                .password(passwordEncoder.encode("pass"))
+                                .roles("DOCTOR")
+                                .build();
+
+                return new InMemoryUserDetailsManager(user1, user2);
+        }
 
 //        @Bean
 //        CorsConfigurationSource corsConfigurationSource() {
