@@ -2,10 +2,13 @@ package com.yeti.hospital.security;
 
 import com.yeti.hospital.dto.LoginRequestDTO;
 import com.yeti.hospital.dto.LoginResponseDTO;
+import com.yeti.hospital.dto.SignUpRequestDTO;
 import com.yeti.hospital.dto.SignUpResponseDTO;
+import com.yeti.hospital.entity.Patient;
 import com.yeti.hospital.entity.User;
 import com.yeti.hospital.entity.types.AuthProviderType;
 import com.yeti.hospital.entity.types.RoleType;
+import com.yeti.hospital.repository.PatientRepo;
 import com.yeti.hospital.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +30,7 @@ public class AuthServices {
   private final AuthUtil authUtil;
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
+  private final PatientRepo patientRepo;
 
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
 
@@ -41,7 +45,7 @@ public class AuthServices {
         return new LoginResponseDTO(token, user.getId());
     }
 
-  public User signUpInternal(LoginRequestDTO signUpRequestDTO , AuthProviderType authProviderType, String providerId) {
+  public User signUpInternal(SignUpRequestDTO signUpRequestDTO , AuthProviderType authProviderType, String providerId) {
     User user = userRepository.findByUsername(signUpRequestDTO.getUsername()).orElse(null);
 
     if (user != null)
@@ -50,18 +54,25 @@ public class AuthServices {
     user = User.builder()
             .username(signUpRequestDTO.getUsername())
             .providerId(providerId)
-            .roleType(Set.of(RoleType.PATIENT))
+            .roleType(signUpRequestDTO.getRoles())//! n ever do this define the roleType.PATIENT only for better practice
             .authProviderType(authProviderType)
             .build();
+    //? this user is now user for the patient as well
+      Patient patient = Patient.builder()
+              .name(signUpRequestDTO.getName())
+              .email(signUpRequestDTO.getUsername())
+              .user(user)
+              .build();
+       patientRepo.save(patient);
 
        if(authProviderType == AuthProviderType.EMAIL){
            user.setPassword(passwordEncoder.encode(signUpRequestDTO.getPassword()));
        }
-       return userRepository.save(user);
+       return user;
     //return new SignUpResponseDTO(user.getId(), user.getUsername());
 
   }
-    public SignUpResponseDTO signup(LoginRequestDTO signupRequestDTO){
+    public SignUpResponseDTO signup(SignUpRequestDTO signupRequestDTO){
         User user = signUpInternal(signupRequestDTO,AuthProviderType.EMAIL,null);
         return new SignUpResponseDTO(user.getId(),user.getUsername());
 
@@ -83,7 +94,7 @@ public class AuthServices {
             String userName = authUtil.determineUserFromOauth2User(oAuth2User,registrationId,providerId);
            // ? thats why we are using this userName
             //String userName = email!=null ? email:null;
-            user = signUpInternal(new LoginRequestDTO(userName,null),providerType,providerId);
+            user = signUpInternal(new SignUpRequestDTO(userName,null,name, Set.of(RoleType.PATIENT)),providerType,providerId);
         }else if(user!=null){
             if (email!=null && !email.isBlank() && !email.equals(user.getUsername())){
              user.setUsername(email);

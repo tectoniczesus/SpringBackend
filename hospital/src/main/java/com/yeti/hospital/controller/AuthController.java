@@ -2,6 +2,7 @@ package com.yeti.hospital.controller;
 
 import com.yeti.hospital.dto.LoginRequestDTO;
 import com.yeti.hospital.dto.LoginResponseDTO;
+import com.yeti.hospital.dto.SignUpRequestDTO;
 import com.yeti.hospital.dto.SignUpResponseDTO;
 import com.yeti.hospital.security.AuthServices;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class AuthController {
   }
 
   @PostMapping("/signup")
-  public ResponseEntity<SignUpResponseDTO> signup(@RequestBody LoginRequestDTO signUpRequestDTO) {
+  public ResponseEntity<SignUpResponseDTO> signup(@RequestBody SignUpRequestDTO signUpRequestDTO) {
     return ResponseEntity.ok(authServices.signup(signUpRequestDTO));
   }
 }
