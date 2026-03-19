@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
 @ToString
 @Getter
@@ -27,7 +28,9 @@ public class Patient {
    private LocalDate birthDate;
 
    private String email;
-
+   @OneToOne
+   @MapsId
+    private User user;
    private String gender;
    private String bloodGrp;
 

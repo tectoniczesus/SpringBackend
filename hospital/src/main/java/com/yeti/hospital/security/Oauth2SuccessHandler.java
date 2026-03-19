@@ -33,7 +33,7 @@ public class Oauth2SuccessHandler implements AuthenticationSuccessHandler {
         System.out.println("User attributes: " + oAuth2User.getAttributes());
         System.out.println("Registration ID: " + token.getAuthorizedClientRegistrationId());
 
-        String registrationId = token.getAuthorizedClientRegistrationId();
+         String registrationId = token.getAuthorizedClientRegistrationId();
 
 
          ResponseEntity<LoginResponseDTO> loginResponse   = authServices.handleOAuth2LoginRequest(oAuth2User,registrationId);
