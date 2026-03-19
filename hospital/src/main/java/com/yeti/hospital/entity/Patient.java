@@ -2,10 +2,7 @@ package com.yeti.hospital.entity;
 
 import com.yeti.hospital.entity.types.BloodGrpType;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,6 +14,9 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "patient")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Patient {
 
     @Id
