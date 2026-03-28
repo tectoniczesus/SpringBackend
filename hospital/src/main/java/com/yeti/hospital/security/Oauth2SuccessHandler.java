@@ -4,7 +4,7 @@ import com.yeti.hospital.dto.LoginResponseDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,10 +17,15 @@ import tools.jackson.databind.ObjectMapper;
 import java.io.IOException;
 
 @Component
-@RequiredArgsConstructor
 public class Oauth2SuccessHandler implements AuthenticationSuccessHandler {
     private final AuthServices authServices;
     private final ObjectMapper objectMapper;
+
+    public Oauth2SuccessHandler(@Lazy AuthServices authServices, ObjectMapper objectMapper) {
+        this.authServices = authServices;
+        this.objectMapper = objectMapper;
+    }
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         System.out.println(authentication.getClass());
