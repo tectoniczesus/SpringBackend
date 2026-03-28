@@ -12,6 +12,7 @@ import com.yeti.hospital.repository.PatientRepo;
 import com.yeti.hospital.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -26,7 +27,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class AuthServices {
-  private final AuthenticationManager authenticationManager;
+  private final @Lazy AuthenticationManager authenticationManager;
   private final AuthUtil authUtil;
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
@@ -51,12 +52,20 @@ public class AuthServices {
     if (user != null)
       throw new IllegalArgumentException("User already exists");
 
+    Set<RoleType> roles = signUpRequestDTO.getRoles() == null || signUpRequestDTO.getRoles().isEmpty()
+            ? Set.of(RoleType.PATIENT)
+            : signUpRequestDTO.getRoles();
+
     user = User.builder()
             .username(signUpRequestDTO.getUsername())
             .providerId(providerId)
-            .roleType(signUpRequestDTO.getRoles())//! n ever do this define the roleType.PATIENT only for better practice
+            .roleType(roles)
             .authProviderType(authProviderType)
             .build();
+       if(authProviderType == AuthProviderType.EMAIL){
+           user.setPassword(passwordEncoder.encode(signUpRequestDTO.getPassword()));
+       }
+       user = userRepository.save(user);
     //? this user is now user for the patient as well
       Patient patient = Patient.builder()
               .name(signUpRequestDTO.getName())
@@ -64,10 +73,6 @@ public class AuthServices {
               .user(user)
               .build();
        patientRepo.save(patient);
-
-       if(authProviderType == AuthProviderType.EMAIL){
-           user.setPassword(passwordEncoder.encode(signUpRequestDTO.getPassword()));
-       }
        return user;
     //return new SignUpResponseDTO(user.getId(), user.getUsername());
 
@@ -115,3 +120,4 @@ public class AuthServices {
 
     }
 }
+//  18:40 the postman is not working
