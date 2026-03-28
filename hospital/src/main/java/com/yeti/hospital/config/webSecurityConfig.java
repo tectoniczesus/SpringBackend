@@ -1,27 +1,20 @@
 package com.yeti.hospital.config;
 
 import com.yeti.hospital.security.Oauth2SuccessHandler;
+import com.yeti.hospital.security.CustomUserDetailServices;
 import com.yeti.hospital.security.jwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -29,7 +22,8 @@ import java.util.List;
 public class webSecurityConfig {
         private final PasswordEncoder passwordEncoder;
         private final jwtAuthFilter jwtAuthFilter;
-         private final Oauth2SuccessHandler oauth2SuccessHandler;
+        private final Oauth2SuccessHandler oauth2SuccessHandler;
+        private final CustomUserDetailServices customUserDetailServices;
 
         // * the route localhost:8080/patient/allPatient is working fine as public
         // ? but all me the other routes are giving error of 403forbidden even after
@@ -57,6 +51,7 @@ public class webSecurityConfig {
 //                                                .requestMatchers("/patient/**").hasRole("ADMIN")
 //                                                .requestMatchers("/doctor/**").hasAnyRole("DOCTOR", "ADMIN")
                                                 .anyRequest().authenticated())
+                        .authenticationProvider(authenticationProvider())
                         //.httpBasic(Customizer.withDefaults())
                         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                         .oauth2Login(oAuth2 -> oAuth2
@@ -75,19 +70,12 @@ public class webSecurityConfig {
                  */
                 return httpSecurity.build();
         }
-//
-        @Bean
-        UserDetailsService userDetailsService() {
-                UserDetails user1 = User.withUsername("admin")
-                                .password(passwordEncoder.encode("pass"))
-                                .roles("ADMIN")
-                                .build();
-                UserDetails user2 = User.withUsername("doctor")
-                                .password(passwordEncoder.encode("pass"))
-                                .roles("DOCTOR")
-                                .build();
 
-                return new InMemoryUserDetailsManager(user1, user2);
+        @Bean
+        AuthenticationProvider authenticationProvider() {
+                DaoAuthenticationProvider provider = new DaoAuthenticationProvider(customUserDetailServices);
+                provider.setPasswordEncoder(passwordEncoder);
+                return provider;
         }
 
 //        @Bean
