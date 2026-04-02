@@ -1,9 +1,11 @@
 package com.yeti.hospital.controller;
 
 import com.yeti.hospital.dto.AppointmentResponseDTO;
+import com.yeti.hospital.entity.User;
 import com.yeti.hospital.services.AppointmentServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +27,7 @@ private final AppointmentServices appointmentServices;
 
     @GetMapping("/appointments")
    public ResponseEntity<List<AppointmentResponseDTO>> getAllAppointment(){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
        return ResponseEntity.ok(appointmentServices.getDoctorsAppointment(2l));
    }
 }
