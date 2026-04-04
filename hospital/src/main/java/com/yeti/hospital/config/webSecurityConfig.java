@@ -1,5 +1,6 @@
 package com.yeti.hospital.config;
 
+import com.yeti.hospital.entity.types.RoleType;
 import com.yeti.hospital.security.Oauth2SuccessHandler;
 import com.yeti.hospital.security.CustomUserDetailServices;
 import com.yeti.hospital.security.jwtAuthFilter;
@@ -15,6 +16,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static com.yeti.hospital.entity.types.RoleType.*;
+//import static com.yeti.hospital.entity.types.RoleType.DOCTOR;
 
 @Configuration
 @RequiredArgsConstructor
@@ -48,8 +52,8 @@ public class webSecurityConfig {
                                 .authorizeHttpRequests(auth -> auth
                                                 //.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                                 .requestMatchers("/public/**", "/api/v1/auth/**", "/error").permitAll()
-//                                                .requestMatchers("/patient/**").hasRole("ADMIN")
-//                                                .requestMatchers("/doctor/**").hasAnyRole("DOCTOR", "ADMIN")
+                                               .requestMatchers("/admin/**").hasRole(ADMIN.name())
+                                                .requestMatchers("/doctor/**").hasAnyRole(DOCTOR.name(),ADMIN.name())
                                                 .anyRequest().authenticated())
                         .authenticationProvider(authenticationProvider())
                         //.httpBasic(Customizer.withDefaults())
